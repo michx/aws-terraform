@@ -8,8 +8,7 @@ variable "vpc_id" {}
 variable "cidr_block" {}
 variable "av_zone" {}
 
-resource "aws_vpc" "main" {
-   id = "${var.vpc_id}"
+resource "aws_vpc" "${var.vpc_id}" {
    cidr_block = "10.0.0.0/16"
 }
 
