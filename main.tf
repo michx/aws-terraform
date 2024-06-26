@@ -18,7 +18,7 @@ resource "aws_vpc" "main" {
 
 
 resource "aws_subnet" "example" {
-    vpc_id            = "${var.vpc_id}"
+    vpc_id            = aws_vpc.main.id
     availability_zone = "${var.av_zone}"
     cidr_block        = "${cidrsubnet(var.cidr_block, 4, 1)}"
 }
