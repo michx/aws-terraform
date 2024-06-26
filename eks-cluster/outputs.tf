@@ -1,4 +1,4 @@
-# Copyright (c) HashiCorp
+# Copyright  HashiCorp
 
 
 output "cluster_endpoint" {
