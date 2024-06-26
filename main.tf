@@ -10,7 +10,7 @@ variable "cidr_block" {}
 
 
 resource "aws_subnet" "example" {
-    vpc_id            = "${var.selected.id}"
+    vpc_id            = "${var.vpc_id}"
     availability_zone = "us-west-2a"
     cidr_block        = "${cidrsubnet(var.cidr_block, 4, 1)}"
 }
