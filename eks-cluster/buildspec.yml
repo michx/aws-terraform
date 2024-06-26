@@ -1,0 +1,11 @@
+# Terraform Test 6
+version: 0.1
+phases:
+  pre_build:
+    commands:
+      - cd eks-cluster && terraform init
+      - cd eks-cluster && terraform validate
+
+  build:
+    commands:
+      - cd eks-cluster && terraform apply -auto-approve
