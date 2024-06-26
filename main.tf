@@ -6,12 +6,13 @@ terraform {
 
 variable "vpc_id" {}
 variable "cidr_block" {}
+variable "av_zone" {}
 
 
 
 resource "aws_subnet" "example" {
     vpc_id            = "${var.vpc_id}"
-    availability_zone = "us-west-2a"
+    availability_zone = "${var.av_zone}"
     cidr_block        = "${cidrsubnet(var.cidr_block, 4, 1)}"
 }
 
