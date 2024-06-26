@@ -3,11 +3,6 @@ terraform {
 }
 
 
-provider "aws" {
-   access_key = "ASIAQVV7YLIC3VNSKNMG"
-   secret_key = "sddwXg41iuvqgEtODUtasLDelK7FuhKffQ7O+PNa"
-   region = "us-west-2"
-}
 
 variable "vpc_id" {}
 
