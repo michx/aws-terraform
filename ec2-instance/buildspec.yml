@@ -3,11 +3,9 @@ version: 0.1
 phases:
   pre_build:
     commands:
-      - cd ec2-instance
-      - terraform init
-      - terraform validate
+      - cd ec2-instance && terraform init
+      - cd ec2-instance && terraform validate
 
   build:
     commands:
-      - cd ec2-instance
-      - terraform apply -auto-approve
+      - cd ec2-instance && terraform apply -auto-approve
