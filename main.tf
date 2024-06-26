@@ -5,6 +5,7 @@ terraform {
 
 
 variable "vpc_id" {}
+variable "cidr_block" {}
 
 data "aws_vpc" "selected" {
    id = "${var.vpc_id}"
