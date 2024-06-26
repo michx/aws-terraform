@@ -8,8 +8,12 @@ variable "vpc_id" {}
 variable "cidr_block" {}
 variable "av_zone" {}
 
-resource "aws_vpc" "${var.vpc_id}" {
+resource "aws_vpc" "main" {
    cidr_block = "10.0.0.0/16"
+   tags = {
+    terraform = "true"
+    Name = "${var.vpc_id}"
+  }
 }
 
 
