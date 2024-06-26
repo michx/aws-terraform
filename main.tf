@@ -7,14 +7,12 @@ terraform {
 variable "vpc_id" {}
 variable "cidr_block" {}
 
-data "aws_vpc" "selected" {
-   id = "${var.vpc_id}"
-}
+
 
 resource "aws_subnet" "example" {
-    vpc_id            = "${data.aws_vpc.selected.id}"
+    vpc_id            = "${var.selected.id}"
     availability_zone = "us-west-2a"
-    cidr_block        = "${cidrsubnet(data.aws_vpc.selected.cidr_block, 4, 1)}"
+    cidr_block        = "${cidrsubnet(var.cidr_block, 4, 1)}"
 }
 
 resource "aws_network_interface" "MyAWSResource" {
