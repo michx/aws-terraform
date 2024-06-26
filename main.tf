@@ -24,7 +24,7 @@ resource "aws_instance" "test1" {
    ami             = "ami-01b799c439fd5516a"
    instance_type   = "t2.micro"
    network_interface {
-    network_interface_id = aws_network_interface.MyAWSResource
+    network_interface_id = aws_network_interface.MyAWSResource.id
     device_index = 0
    }
 }
