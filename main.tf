@@ -16,7 +16,9 @@ resource "aws_subnet" "example" {
 }
 
 resource "aws_network_interface" "MyAWSResource" {
-   subnet_id = aws_subnet.example
+   subnet_id = aws_subnet.example.id
+   availability_zone = "us-west-2a"
+
    }
 
 
