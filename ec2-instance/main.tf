@@ -8,6 +8,7 @@ variable "vpc_id" {}
 variable "cidr_block" {}
 variable "av_zone" {}
 
+
 resource "aws_vpc" "main" {
    cidr_block = "10.0.0.0/16"
    tags = {
@@ -40,3 +41,8 @@ resource "aws_instance" "test1" {
   }
 }
 
+resource "aws_s3_bucket_object" "object" {
+  key    = "plan.tf"
+  bucket ="terraform-state-michdid"
+  source = "eks-cluster/plan.tf"
+}
