@@ -27,7 +27,7 @@ terraform {
         bucket  = "terraform-state-michdid"
         encrypt = true
         key     = "terraform.tfstate"    
-        region  = "eu-west-1"  
+        region  = "us-east-2"  
     }
   required_version = "~> 1.3"
 }
