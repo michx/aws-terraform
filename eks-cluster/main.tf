@@ -113,6 +113,6 @@ module "irsa-ebs-csi" {
 }
 resource "aws_s3_bucket_object" "object" {
   key    = "plan.tf"
-  bucket ="terraform-state-michdid"
+  bucket = terraform-state-michdid
   source = "eks-cluster/plan.tf"
 }
