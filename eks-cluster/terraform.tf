@@ -2,8 +2,6 @@
 
 terraform {
 
-
-
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -25,7 +23,12 @@ terraform {
       version = "~> 2.3.4"
     }
   }
-
+    backend "s3" {
+        bucket  = "terraform-state-michdid"
+        encrypt = true
+        key     = "terraform.tfstate"    
+        region  = "eu-west-1"  
+    }
   required_version = "~> 1.3"
 }
 
