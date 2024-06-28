@@ -8,7 +8,7 @@ phases:
 
   build:
     commands:
-      - cd eks-cluster && terraform plan -out=plan.tf
+      - cd eks-cluster && terraform apply -out=plan.tf
   
   post_build:
     comands:
