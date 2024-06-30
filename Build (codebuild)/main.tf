@@ -125,11 +125,6 @@ resource "aws_codebuild_project" "cb_project" {
       stream_name = "log-stream"
     }
 
-    s3_logs {
-      status   = "ENABLED"
-      location = "${aws_s3_bucket.cb1.id}/build-log"
-    }
-  }
 
   source {
     type            = "GITHUB"
