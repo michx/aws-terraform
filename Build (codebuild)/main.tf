@@ -129,6 +129,7 @@ resource "aws_codebuild_project" "cb_project" {
   source {
     type            = "GITHUB"
     location        = "https://github.com/michx/aws-terraform"
+    buildspec       = "eks-cluster/buildspec.yml"
     git_clone_depth = 1
 
     git_submodules_config {
