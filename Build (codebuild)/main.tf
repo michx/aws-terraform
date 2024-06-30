@@ -18,22 +18,21 @@ resource "aws_iam_role" "role_for_codebuild" {
 }
 
 data "aws_iam_policy_document" "policy_cb" {
-  statement {
-    effect = "Allow"
-
+ statement {
     actions = [
       "logs:CreateLogGroup",
       "logs:CreateLogStream",
       "logs:PutLogEvents",
-    ]
-
-    resources = ["*"]
-  }
-
-  statement {
-    effect = "Allow"
-
-    actions = [
+      "s3:PutObject",
+      "s3:GetObject",
+      "s3:GetObjectVersion",
+      "s3:GetBucketAcl",
+      "s3:GetBucketLocation",
+      "codebuild:CreateReportGroup",
+      "codebuild:CreateReport",
+      "codebuild:UpdateReport",
+      "codebuild:BatchPutTestCases",
+      "codebuild:BatchPutCodeCoverages",
       "ec2:CreateNetworkInterface",
       "ec2:DescribeDhcpOptions",
       "ec2:DescribeNetworkInterfaces",
@@ -41,18 +40,59 @@ data "aws_iam_policy_document" "policy_cb" {
       "ec2:DescribeSubnets",
       "ec2:DescribeSecurityGroups",
       "ec2:DescribeVpcs",
+      "ec2:CreateNetworkInterfacePermission",
+      "logs:CreateLogGroup",
+      "logs:CreateLogStream",
+      "logs:PutLogEvents",
+      "s3:PutObject",
+      "s3:GetObject",
+      "s3:GetObjectVersion",
+      "s3:GetBucketAcl",
+      "s3:GetBucketLocation",
+      "s3:PutObject",
+      "s3:GetObject",
+      "s3:GetBucketAcl",
+      "s3:GetBucketLocation",
+      "s3:ListBucket",
+      "codebuild:CreateReportGroup",
+      "codebuild:CreateReport",
+      "codebuild:UpdateReport",
+      "codebuild:BatchPutTestCases",
+      "codebuild:BatchPutCodeCoverages",
+      "eks:*",
+      "iam:*",
+      "organizations:DescribeAccount",
+      "organizations:DescribeOrganization",
+      "organizations:DescribeOrganizationalUnit",
+      "organizations:DescribePolicy",
+      "organizations:ListChildren",
+      "organizations:ListParents",
+      "organizations:ListPoliciesForTarget",
+      "organizations:ListRoots",
+      "organizations:ListPolicies",
+      "organizations:ListTargetsForPolicy",
+      "kms:CreateAlias",
+      "kms:CreateKey",
+      "kms:DeleteAlias",
+      "kms:Describe*",
+      "kms:GenerateRandom",
+      "kms:Get*",
+      "kms:List*",
+      "kms:TagResource",
+      "kms:UntagResource",
+      "iam:ListGroups",
+      "iam:ListRoles",
+      "iam:ListUsers",
+      "logs:CreateLogGroup",
+      "logs:CreateLogStream",
+      "logs:PutLogEvents",
+      "logs:DescribeLogStreams",
+      "s3:*",
+      "s3-object-lambda:*",
     ]
-
+    effect = "Allow"
     resources = ["*"]
   }
-
-  statement {
-    effect    = "Allow"
-    actions   = ["ec2:CreateNetworkInterfacePermission"]
-    resources = ["*"]
-
-  }
-
 }
 
 resource "aws_iam_role_policy" "codebuild_role_policy" {
