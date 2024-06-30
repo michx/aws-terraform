@@ -1,15 +1,17 @@
-# Terraform Test 6
-version: 0.1
+version: 0.2
+
 phases:
   pre_build:
+    run-as: root
     commands:
-      - cd eks-cluster && terraform init
-      - cd eks-cluster && terraform validate
-
+      - apt-get update
+      - apt-get install -y gnupg software-properties-common
+      - wget -O- https://apt.releases.hashicorp.com/gpg > xyz
+      - gpg --dearmor xyz 
+      - mv xyz.gpg /usr/share/keyrings/hashicorp-archive-keyring.gpg
+      - echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+      - apt-get update
+      - apt-get install terraform
   build:
     commands:
-      - cd eks-cluster && terraform apply -out=plan.tf
-  
-  post_build:
-    comands:
-      - cd eks-cluster && terraform output
+       - cd eks-cluster && terraform init && terraform apply -auto-approve
