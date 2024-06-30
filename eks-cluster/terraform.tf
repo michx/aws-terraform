@@ -23,12 +23,6 @@ terraform {
       version = "~> 2.3.4"
     }
   }
-    backend "s3" {
-        bucket  = "terraform-state-michdid"
-        encrypt = true
-        key     = "terraform.tfstate"    
-        region  = "us-east-1"  
-    }
   required_version = "~> 1.3"
 }
 
