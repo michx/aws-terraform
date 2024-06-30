@@ -124,7 +124,7 @@ resource "aws_codebuild_project" "cb_project" {
       group_name  = "log-group"
       stream_name = "log-stream"
     }
-
+  }
 
   source {
     type            = "GITHUB"
