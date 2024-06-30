@@ -104,7 +104,7 @@ resource "aws_codebuild_project" "cb_project" {
   name          = "CD_eks_build"
   description   = "codebuild_project_create_a_simple_EKS_Cluster"
   build_timeout = 5
-  service_role  = aws_iam_role.service_role.arn
+  service_role  = aws_iam_role.role_for_codebuild.arn
 
   artifacts {
     type = "NO_ARTIFACTS"
@@ -114,7 +114,7 @@ resource "aws_codebuild_project" "cb_project" {
   environment {
     compute_type                = "BUILD_GENERAL1_SMALL"
     image                       = "aws/codebuild/standard:7.0"
-    type                        = "Linux EC2"
+    type                        = "LINUX_CONTAINER"
     image_pull_credentials_type = "CODEBUILD"
 
   }
