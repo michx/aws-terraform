@@ -1,11 +1,3 @@
-resource "aws_s3_bucket" "cb1" {
-  bucket = "codebuild_sample_aws"
-}
-
-resource "aws_s3_bucket_acl" "cb" {
-  bucket = aws_s3_bucket.cb1
-  acl    = "private"
-}
 
 data "aws_iam_policy_document" "assume_role" {
   statement {
@@ -61,14 +53,6 @@ data "aws_iam_policy_document" "policy_cb" {
 
   }
 
-  statement {
-    effect  = "Allow"
-    actions = ["s3:*"]
-    resources = [
-      aws_s3_bucket.cb1.arn,
-      "${aws_s3_bucket.example.arn}/*",
-    ]
-  }
 }
 
 resource "aws_iam_role_policy" "codebuild_role_policy" {
@@ -86,10 +70,6 @@ resource "aws_codebuild_project" "cb_project" {
     type = "NO_ARTIFACTS"
   }
 
-  cache {
-    type     = "S3"
-    location = aws_s3_bucket.cb1.bucket
-  }
 
   environment {
     compute_type                = "BUILD_GENERAL1_SMALL"
