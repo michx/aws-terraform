@@ -122,3 +122,4 @@ resource "aws_codebuild_project" "cb_project" {
   }
 
   source_version = "main"
+}
