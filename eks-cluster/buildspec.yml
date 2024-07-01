@@ -14,4 +14,7 @@ phases:
       - apt-get install terraform
   build:
     commands:
-       - cd eks-cluster && terraform init && terraform apply -auto-approve
+       - cd eks-cluster && terraform init
+       - cd eks-cluster && terraform apply -auto-approve
+       - if [ $? -eq 1 ]; then terraform destroy -auto-approve; fi
+
