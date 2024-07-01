@@ -8,7 +8,7 @@ output "cluster_endpoint" {
 
 output "cluster_vpc_id" {
   description = "Endpoint for EKS control plane"
-  value       = module.eks.vpc_id
+  value       = module.eks.vpc.vpc_id
 }
 
 output "cluster_security_group_id" {
