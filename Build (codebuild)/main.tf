@@ -36,7 +36,7 @@ data "aws_iam_policy_document" "policy_cb" {
       "ec2:CreateNetworkInterface",
       "ec2:DescribeDhcpOptions",
       "ec2:DescribeNetworkInterfaces",
-      "ec2:DescribeAvailabilityZones"
+      "ec2:DescribeAvailabilityZones",
       "ec2:DeleteNetworkInterface",
       "ec2:DescribeSubnets",
       "ec2:DescribeSecurityGroups",
