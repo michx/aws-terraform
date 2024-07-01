@@ -18,7 +18,7 @@ for cluster in clusters:
     nodegroups=client.list_nodegroups(clusterName=cluster)['nodegroups']
     print ('Found the following node groups: ', nodegroups)
     for ng in nodegroups:
-        print ('Deleteing thw nodegroup :' , ng)
+        print ('Deleting thw nodegroup :' , ng)
         ng_deleted=False
         while ng_deleted==False:
             try: 
@@ -65,6 +65,7 @@ if defined_Vpc_id:
             for nat in nat_gateways['NatGateways']:
                 try:
                     network_client.delete_nat_gateway(NatGatewayId=nat['NatGatewayId'])
+                    network_client.get_waiter('nat_gateway_deleted')
                     print ('Deleted NAT Gateway for Subnet :', subnet['SubnetId'])
                 except botocore.exceptions.ClientError as error:
                     print (error)
