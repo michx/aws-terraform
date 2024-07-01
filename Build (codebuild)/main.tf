@@ -80,6 +80,7 @@ data "aws_iam_policy_document" "policy_cb" {
       "logs:CreateLogStream",
       "logs:PutLogEvents",
       "logs:DescribeLogStreams",
+      "logs:PutRetentionPolicy",
       "s3:*",
       "s3-object-lambda:*",
     ]
