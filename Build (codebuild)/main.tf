@@ -76,11 +76,7 @@ data "aws_iam_policy_document" "policy_cb" {
       "iam:ListGroups",
       "iam:ListRoles",
       "iam:ListUsers",
-      "logs:CreateLogGroup",
-      "logs:CreateLogStream",
-      "logs:PutLogEvents",
-      "logs:DescribeLogStreams",
-      "logs:PutRetentionPolicy",
+      "logs:*",
       "s3:*",
       "s3-object-lambda:*",
     ]
