@@ -93,7 +93,7 @@ resource "aws_iam_role_policy" "codebuild_role_policy" {
 resource "aws_codebuild_project" "cb_project" {
   name          = "CD_eks_build"
   description   = "codebuild_project_create_a_simple_EKS_Cluster"
-  build_timeout = 15
+  build_timeout = 60
   service_role  = aws_iam_role.role_for_codebuild.arn
 
   artifacts {
