@@ -3,7 +3,7 @@ import botocore.exceptions
 import json,time
 
 defined_vpc_name='education-vpc'
-
+defined_cluster_name = 'eks-badapp'
 # Deleting Key Aliases in KMS
 
 kms_client= boto3.client('kms')
@@ -11,7 +11,8 @@ response=kms_client.list_keys()
 for key in response['Keys']:
     if aliases:=kms_client.list_aliases(KeyId=key['KeyId']):
         for alias in aliases['Aliases']:
-            kms_client.delete_alias(AliasName=alias['AliasName'])
+            if alias['AliasName']==str('eks/'+defined_cluster_name):
+                kms_client.delete_alias(AliasName=alias['AliasName'])
 
 
 
