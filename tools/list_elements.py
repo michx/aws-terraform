@@ -55,6 +55,6 @@ for group in lgs:
     if 'eks' in group['logGroupName']:
         print ('Found  the following log group : ',group['logGroupName'])
         logs_found=True
-if logs_found==True:
+if logs_found==False:
     print ('No EKS Log Groups found !!')
 
