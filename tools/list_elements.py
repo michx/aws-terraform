@@ -45,10 +45,16 @@ if cluster_found==True:
 # Checking Related Log Groups
 
 log_client=boto3.client('logs')
-response=log_client.describe_log_groups()
+try:
+    response=log_client.describe_log_groups()
+except:
+    print ('No Log Groups found !!')
 lgs=response['logGroups']
-lgs_name=[]
+logs_found=False
 for group in lgs:
     if 'eks' in group['logGroupName']:
         print ('Found  the following log group : ',group['logGroupName'])
+        logs_found=True
+if logs_found==True:
+    print ('No EKS Log Groups found !!')
 
