@@ -11,7 +11,8 @@ response=kms_client.list_keys()
 for key in response['Keys']:
     if aliases:=kms_client.list_aliases(KeyId=key['KeyId']):
         for alias in aliases['Aliases']:
-            if alias['AliasName']==str('eks/'+defined_cluster_name):
+            if alias['AliasName']==str('alias/eks/'+defined_cluster_name):
+                print ('Found and Deleting Key for cluster:', defined_cluster_name)
                 kms_client.delete_alias(AliasName=alias['AliasName'])
 
 
