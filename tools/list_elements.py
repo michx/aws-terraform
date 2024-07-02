@@ -58,3 +58,16 @@ for group in lgs:
 if logs_found==False:
     print ('No EKS Log Groups found !!')
 
+# Checking IAM role for executing Cluster management
+
+iam=boto3.client('iam')
+try:
+    iam.list_roles(Arn='arn:aws:iam::aws:policy/service-role/AmazonEKSTFEBSCSIRole-eks')
+    print ('EBSCSI Role is present...')
+except:
+    print ('EBSCSI Role is not here !!')
+try:
+    iam.list_policies(Arn='arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy')
+    print ('EBSCSI Policy is present...')
+except:
+    print ('EBSCSI Policy is not here !!')
