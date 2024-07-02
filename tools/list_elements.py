@@ -62,8 +62,12 @@ if logs_found==False:
 
 iam=boto3.client('iam')
 try:
-    iam.list_roles(Arn='arn:aws:iam::aws:policy/service-role/AmazonEKSTFEBSCSIRole-eks')
-    print ('EBSCSI Role is present...')
+    roles=iam.list_roles()['Roles']
+    for role in roles:
+        if defined_cluster_name in role['RoleName']:
+            print ('EBSCSI Role is present...')
+        else:
+            print ('EBSCSI Role is not here !!')            
 except:
     print ('EBSCSI Role is not here !!')
 try:
