@@ -66,11 +66,11 @@ try:
     roles=iam.list_roles()['Roles']
     for role in roles:
         if defined_cluster_name in role['RoleName']:
-            print ('EBSCSI Role is present...')
+            print ('EBSCSI Role is present...Role Name :',role['RoleName'])
             role_found=True         
 except:
     print ('EBSCSI Role is not here !!')
-if role_found==True:
+if role_found==False:
     print ('EKS Role is not here !!') 
 try:
     iam.list_policies(Arn='arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy')
