@@ -91,7 +91,7 @@ response=network_client.describe_vpcs()
 for vpc in response['Vpcs']:
     if vpc['Tags'][0]['Value']==defined_vpc_name:
         defined_Vpc_id=vpc['VpcId']
-if not defined_Vpc_id:
+if 'defined_Vpc_id' not in locals():
     print ("VPC not present!!")
 else:
     print ("VPC is here with vpc-id : ",defined_Vpc_id)
