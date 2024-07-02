@@ -113,7 +113,7 @@ else:
     # Deleting Routing Tables
     routing_tables=network_client.describe_route_tables(Filters=[{'Name':'vpc-id','Values':[defined_Vpc_id]}])
     for rt in routing_tables['RouteTables']:
-        print ('Found the following Routing Table : ',igw['InternetGatewayId'])
+        print ('Found the following Routing Table : ',rt['RouteTableId'])
     # Deleting Security Groups
     security_groups=network_client.describe_security_groups(Filters=[{'Name':'vpc-id','Values':[defined_Vpc_id]}])
     for sg in security_groups['SecurityGroups']:
