@@ -114,7 +114,7 @@ if defined_Vpc_id:
                 print ('Deleted Routing Table ', rt['RouteTableId'])
             except botocore.exceptions.ClientError as error:
                 print (error)
-        elif rt['Associations'] and rt['Associations'][0]['Main']:
+        elif rt['Associations'] and rt['Associations'][0]['Main']==False:
             try:
                 network_client.delete_route_table(RouteTableId=rt['RouteTableId'])
                 print ('Deleted Routing Table ', rt['RouteTableId'])
