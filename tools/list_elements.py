@@ -42,3 +42,13 @@ if cluster_found==True:
     except:
         print ('No Nodegroups found in cluster ',defined_cluster_name)
 
+# Checking Related Log Groups
+
+log_client=boto3.client('logs')
+response=log_client.describe_log_groups()
+lgs=response['logGroups']
+lgs_name=[]
+for group in lgs:
+    if 'eks' in group['logGroupName']:
+        print ('Found  the following log group : ',group['logGroupName'])
+
