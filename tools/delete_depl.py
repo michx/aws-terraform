@@ -9,7 +9,7 @@ defined_vpc_name='education-vpc'
 kms_client= boto3.client('kms')
 response=kms_client.list_keys()
 for key in response['Keys']:
-    if aliases:=kms_client.list_aliases(key['KeyId']):
+    if aliases:=kms_client.list_aliases(KeyId=key['KeyId']):
         for alias in aliases['Aliases']:
             kms_client.delete_alias(AliasName=alias['AliasName'])
 
