@@ -115,7 +115,7 @@ else:
     for rt in routing_tables['RouteTables']:
         print ('Found the following Routing Table : ',rt['RouteTableId'])
         if rt['Associations']:
-            print ('The Routing table is main: ',rt['Associations'][0]['Main'])
+            print ('    The Routing table is main table: ',rt['Associations'][0]['Main'])
     # Checking Security Groups
     security_groups=network_client.describe_security_groups(Filters=[{'Name':'vpc-id','Values':[defined_Vpc_id]}])
     for sg in security_groups['SecurityGroups']:

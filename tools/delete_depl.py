@@ -111,7 +111,13 @@ if defined_Vpc_id:
         if rt['Associations'] and rt['Associations'][0]['Main']!=True:
             try:
                 network_client.delete_route_table(RouteTableId=rt['RouteTableId'])
-                print ('Deleted Routing Table for VPC:', defined_vpc_name)
+                print ('Deleted Routing Table ', rt['RouteTableId'])
+            except botocore.exceptions.ClientError as error:
+                print (error)
+        else:
+            try:
+                network_client.delete_route_table(RouteTableId=rt['RouteTableId'])
+                print ('Deleted Routing Table ', rt['RouteTableId'])
             except botocore.exceptions.ClientError as error:
                 print (error)
     # Deleting Security Groups
