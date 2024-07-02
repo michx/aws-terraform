@@ -20,9 +20,25 @@ if key_found==False:
 
 
 # Check if EKS Cluster is there
+cluster_found=False
 client = boto3.client('eks')
-response = client.describe_cluster(name=defined_cluster_name)
-if cluster in response:
-    print ('Found the following cluster:',defined_cluster_name)
-else:
+try:
+    response = client.describe_cluster(name=defined_cluster_name)
+    print ('Found the following cluster:',defined_cluster_name,' with cluster-id', response['cluster']['id'])
+    cluster_found=True
+except:
     print ('EKS Cluster is not here !!')
+
+# Checking Node Groups for Cluster
+nodegroups_found=False
+if cluster_found==True:
+    print ('Searching for nodes and nodegroups in :', defined_cluster_name)
+    try:
+        nodegroups=client.list_nodegroups(clusterName=defined_cluster_name)['nodegroups']
+        print ('Found the following node groups: ', nodegroups)
+        nodegroups_found=True
+        for ng in nodegroups:
+            print ('NodeGroup ID :' , ng)
+    except:
+        print ('No Nodegroups found in cluster ',defined_cluster_name)
+
