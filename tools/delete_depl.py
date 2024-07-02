@@ -108,7 +108,7 @@ if defined_Vpc_id:
     # Deleting Routing Tables
     routing_tables=network_client.describe_route_tables(Filters=[{'Name':'vpc-id','Values':[defined_Vpc_id]}])
     for rt in routing_tables['RouteTables']:
-        if rt['Associations'] and rt['Associations'][0]['Main']!=True:
+        if rt['Associations']:
             try:
                 network_client.delete_route_table(RouteTableId=rt['RouteTableId'])
                 print ('Deleted Routing Table ', rt['RouteTableId'])
