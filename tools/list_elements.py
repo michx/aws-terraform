@@ -95,7 +95,7 @@ if not defined_Vpc_id:
     print ("VPC not present!!")
 else:
     print ("VPC is here with vpc-id : ",defined_Vpc_id)
-    subnets=network_client.describe_subnets()['Subnets']
+    subnets=network_client.describe_subnets(Filters=[{'Name':'vpc-id','Values':[defined_Vpc_id]}])['Subnets']
     for subnet in subnets:
         if subnet['VpcId']==defined_Vpc_id:
             print ('Found the following subnet : ',subnet['SubnetId'])

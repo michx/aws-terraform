@@ -108,13 +108,13 @@ if defined_Vpc_id:
     # Deleting Routing Tables
     routing_tables=network_client.describe_route_tables(Filters=[{'Name':'vpc-id','Values':[defined_Vpc_id]}])
     for rt in routing_tables['RouteTables']:
-        if rt['Associations']:
+        if rt['Associations'] and rt['Associations'][0]['Main']!=True:
             try:
                 network_client.delete_route_table(RouteTableId=rt['RouteTableId'])
                 print ('Deleted Routing Table ', rt['RouteTableId'])
             except botocore.exceptions.ClientError as error:
                 print (error)
-        else:
+        elif rt['Associations'] and rt['Associations'][0]['Main']:
             try:
                 network_client.delete_route_table(RouteTableId=rt['RouteTableId'])
                 print ('Deleted Routing Table ', rt['RouteTableId'])
