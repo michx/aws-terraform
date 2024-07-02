@@ -98,65 +98,31 @@ else:
     subnets=network_client.describe_subnets()['Subnets']
     for subnet in subnets:
         if subnet['VpcId']==defined_Vpc_id:
+            print ('Found the following subnet : ',subnet['SubnetId'])
             # Deleting NAT Gateways
             nat_gateways=network_client.describe_nat_gateways(Filters=[{'Name':'subnet-id','Values':[subnet['SubnetId']]}])
             for nat in nat_gateways['NatGateways']:
-                try:
-                    network_client.delete_nat_gateway(NatGatewayId=nat['NatGatewayId'])
-                    network_client.get_waiter('nat_gateway_deleted')
-                    print ('Deleted NAT Gateway for Subnet :', subnet['SubnetId'])
-                except botocore.exceptions.ClientError as error:
-                    print (error)
+                print ('    Found NAT Gateway ',nat['NatGatewayId'])
             network_interfaces=network_client.describe_network_interfaces(Filters=[{'Name':'subnet-id','Values':[subnet['SubnetId']]}])
             for ifs in  network_interfaces['NetworkInterfaces']:
-                try:
-                    network_client.delete_network_interface(NetworkInterfaceId=ifs['NetworkInterfaceId'])
-                    print ('Delete Network Interface for subnet: ', subnet['SubnetId'])
-                except botocore.exceptions.ClientError as error:
-                    print (error)
-            print ('Found and deleting the following subnet:', subnet['SubnetId'])
-            try:
-                network_client.delete_subnet(SubnetId=subnet['SubnetId'])
-            except botocore.exceptions.ClientError as error:
-                print (error)
+                print ('    Found Network Interface ',ifs['NetworkInterfaceId'])
         # Deleting Internet Gateways
     igw_gateways=network_client.describe_internet_gateways(Filters=[{'Name':'attachment.vpc-id','Values':[defined_Vpc_id]}])
     for igw in igw_gateways['InternetGateways']:
-        try:
-            network_client.detach_internet_gateway(VpcId=defined_Vpc_id,InternetGatewayId=igw['InternetGatewayId'])
-            network_client.delete_internet_gateway(InternetGatewayId=igw['InternetGatewayId'])
-            print ('Deleted IGW Gateway for Subnet :', subnet['SubnetId'])
-        except botocore.exceptions.ClientError as error:
-            print (error)
+        print ('Found the following Internet Gateway : ',igw['InternetGatewayId'])
     # Deleting Routing Tables
     routing_tables=network_client.describe_route_tables(Filters=[{'Name':'vpc-id','Values':[defined_Vpc_id]}])
     for rt in routing_tables['RouteTables']:
-        if rt['Associations'][0]['Main']!=True:
-            try:
-                network_client.delete_route_table(RouteTableId=rt['RouteTableId'])
-                print ('Deleted Routing Table for VPC:', defined_vpc_name)
-            except botocore.exceptions.ClientError as error:
-                print (error)
+        print ('Found the following Routing Table : ',igw['InternetGatewayId'])
     # Deleting Security Groups
     security_groups=network_client.describe_security_groups(Filters=[{'Name':'vpc-id','Values':[defined_Vpc_id]}])
     for sg in security_groups['SecurityGroups']:
         if sg['GroupName']!='default':
+            print ('Found the following Security Group : ',sg['GroupName'])
             for items in network_client.describe_security_group_rules(Filters=[{'Name':'group-id','Values':[sg['GroupId']]}])['SecurityGroupRules']:
                 if 'ReferencedGroupInfo' in items.keys() and items['ReferencedGroupInfo']['GroupId']!=sg['GroupId']:
-                    try:
-                        network_client.revoke_security_group_ingress(SecurityGroupRuleIds=[items['SecurityGroupRuleId']],GroupId=sg['GroupId'])
-                    except botocore.exceptions.ClientError as error:
-                        print (error)
-            try:
-                network_client.delete_security_group(GroupId=sg['GroupId'])
-                print ('Deleted Routing Table for VPC:', defined_vpc_name)
-            except botocore.exceptions.ClientError as error:
-                print (error)
-    # Deleting VPC
-    try:
-        network_client.delete_vpc(VpcId=defined_Vpc_id)
-        print ('Deleted the VPC: ', defined_vpc_name)
-    except botocore.exceptions.ClientError as error:
-        print(error)
+                    print (" This Security Group rule has cross dependencies  with  ",items['ReferencedGroupInfo']['GroupId'])
+
+
 
 # Deleting 
