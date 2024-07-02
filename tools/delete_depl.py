@@ -147,4 +147,22 @@ if defined_Vpc_id:
     except botocore.exceptions.ClientError as error:
         print(error)
 
-# Deleting 
+# Deleting IAM Roles
+iam=boto3.client('iam')
+role_found=False
+try:
+    roles=iam.list_roles()['Roles']
+    for role in roles:
+        if defined_cluster_name in role['RoleName']:
+            iam.delete_role(RoleName=role['RoleName'])
+            print ('Deleted the following Role : ',role['RoleName'])        
+except:
+    print ('EBSCSI Role is not here !!')
+if role_found==False:
+    print ('EKS Role is not here !!') 
+try:
+    iam.list_policies(Arn='arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy')
+    iam.delete_policy(PolicyArn='arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy')
+    print ('EBSCSI Policy deleted !!')
+except:
+    print ('EBSCSI Policy is not here !!')
