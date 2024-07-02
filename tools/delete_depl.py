@@ -154,8 +154,11 @@ try:
     roles=iam.list_roles()['Roles']
     for role in roles:
         if defined_cluster_name in role['RoleName']:
-            iam.delete_role(RoleName=role['RoleName'])
-            print ('Deleted the following Role : ',role['RoleName'])        
+            try:
+                iam.delete_role(RoleName=role['RoleName'])
+                print ('Deleted the following Role : ',role['RoleName'])
+            except botocore.exceptions.ClientError as error:
+                print(error)
 except:
     print ('EBSCSI Role is not here !!')
 if role_found==False:
