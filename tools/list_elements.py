@@ -99,22 +99,24 @@ else:
     for subnet in subnets:
         if subnet['VpcId']==defined_Vpc_id:
             print ('Found the following subnet : ',subnet['SubnetId'])
-            # Deleting NAT Gateways
+            # Checking NAT Gateways
             nat_gateways=network_client.describe_nat_gateways(Filters=[{'Name':'subnet-id','Values':[subnet['SubnetId']]}])
             for nat in nat_gateways['NatGateways']:
                 print ('    Found NAT Gateway ',nat['NatGatewayId'])
             network_interfaces=network_client.describe_network_interfaces(Filters=[{'Name':'subnet-id','Values':[subnet['SubnetId']]}])
             for ifs in  network_interfaces['NetworkInterfaces']:
                 print ('    Found Network Interface ',ifs['NetworkInterfaceId'])
-        # Deleting Internet Gateways
+        # Checking Internet Gateways
     igw_gateways=network_client.describe_internet_gateways(Filters=[{'Name':'attachment.vpc-id','Values':[defined_Vpc_id]}])
     for igw in igw_gateways['InternetGateways']:
         print ('Found the following Internet Gateway : ',igw['InternetGatewayId'])
-    # Deleting Routing Tables
+    # Checking Routing Tables
     routing_tables=network_client.describe_route_tables(Filters=[{'Name':'vpc-id','Values':[defined_Vpc_id]}])
     for rt in routing_tables['RouteTables']:
         print ('Found the following Routing Table : ',rt['RouteTableId'])
-    # Deleting Security Groups
+        if rt['Associations']:
+            print ('The Routing table is main: ',rt['Associations'][0]['Main'])
+    # Checking Security Groups
     security_groups=network_client.describe_security_groups(Filters=[{'Name':'vpc-id','Values':[defined_Vpc_id]}])
     for sg in security_groups['SecurityGroups']:
         if sg['GroupName']!='default':
