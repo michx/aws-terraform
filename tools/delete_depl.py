@@ -72,7 +72,7 @@ for vpc in response['Vpcs']:
     if vpc['Tags'][0]['Value']==defined_vpc_name:
         defined_Vpc_id=vpc['VpcId']
 if defined_Vpc_id:
-    subnets=network_client.describe_subnets()['Subnets']
+    subnets=network_client.describe_subnets(Filters=[{'Name':'vpc-id','Values':[defined_Vpc_id]}])['Subnets']
     for subnet in subnets:
         if subnet['VpcId']==defined_Vpc_id:
             # Deleting NAT Gateways
