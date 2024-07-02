@@ -8,7 +8,7 @@ defined_cluster_name = 'eks-badapp'
 
 #List Keys for this project's cluster having alias = alias/eks/$defined_cluster_name
 
-print ('#List Keys for this project cluster having alias = alias/eks/$defined_cluster_name',color='green')
+print (colored('#List Keys for this project cluster having alias = alias/eks/$defined_cluster_name','green'))
       
 kms_client= boto3.client('kms')
 response=kms_client.list_keys()
