@@ -159,10 +159,20 @@ for role in roles:
         print ('Trying to delete role ', role['RoleName'])
         attached_policy_names={}
         attached_policy_names=iam.list_attached_role_policies(RoleName=role['RoleName'])['AttachedPolicies']
-        print ('Attached Policies to the role :',attached_policy_names)
+        attached_inline_policy_names=iam.list_role_policies(RoleName=role['RoleName'])['Policies']
+        print ('Attached Standard Policies to the role :',attached_policy_names)
+        print ('Attached Inline Policies to the role :',attached_inline_policy_names)
         for policy in attached_policy_names:
             try:
                 iam.detach_role_policy(RoleName=role['RoleName'],PolicyArn=policy['PolicyArn'])
+                print ('Successfully detaching policy ',policy,' from ',role['RoleName'])
+            except botocore.exceptions.ClientError as error:
+                print(error)
+                print ('Error in Detaching Policy ',policy,' from role ',role['RoleName'])
+        for policy in attached_inline_policy_names:
+            try:
+                iam_inline = boto3.resource('iam')
+                role_policy = iam_inline.RolePolicy(role['RoleName'],policy)
                 print ('Successfully detaching policy ',policy,' from ',role['RoleName'])
             except botocore.exceptions.ClientError as error:
                 print(error)
