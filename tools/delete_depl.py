@@ -156,8 +156,8 @@ for items in iam.list_policies(PathPrefix='/')['Policies']:
     if defined_cluster_name in items['PolicyName']:
         policy_list[items['PolicyName']]=items['Arn']
 for role in roles:
-    print ('Trying to delete role ', role['RoleName'])
     if defined_cluster_name in role['RoleName']:
+        print ('Trying to delete role ', role['RoleName'])
         attached_policy_names=iam.list_role_policies(RoleName=role['RoleName'])['PolicyNames']
         print ('Attached Policies to the role :',attached_policy_names)
         for policy in attached_policy_names:
