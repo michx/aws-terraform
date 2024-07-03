@@ -155,7 +155,6 @@ roles=iam.list_roles()['Roles']
 for items in iam.list_policies(PathPrefix='/')['Policies']:
     if defined_cluster_name in items['PolicyName']:
         policy_list[items['PolicyName']]=items['Arn']
-        print ('Found the following created policies : ',policy_list[items['PolicyName']],' : ', items['Arn'])
 for role in roles:
     if defined_cluster_name in role['RoleName']:
         attached_policy_names=iam.list_role_policies(RoleName=role['RoleName'])['PolicyNames']
@@ -164,11 +163,13 @@ for role in roles:
                 iam.detach_role_policy(RoleName=role['RoleName'],PolicyArn=policy_list[policy])
             except botocore.exceptions.ClientError as error:
                 print(error)
+                print ('Error in Detaching Policy ',policy,' from role ',role['RoleName'])
         try:
             iam.delete_role(RoleName=role['RoleName'])
             print ('Deleted the following Role : ',role['RoleName'])
         except botocore.exceptions.ClientError as error:
             print(error)
+            print ('Error deleting the following Role : ',role['RoleName'])
 
 if role_found==False:
     print ('EKS Role is not here !!') 
