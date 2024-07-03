@@ -161,6 +161,7 @@ for role in roles:
         for policy in attached_policy_names:
             try:
                 iam.detach_role_policy(RoleName=role['RoleName'],PolicyArn=policy_list[policy])
+                print ('Successfully detaching policy ',policy,' from ',role['RoleName'])
             except botocore.exceptions.ClientError as error:
                 print(error)
                 print ('Error in Detaching Policy ',policy,' from role ',role['RoleName'])
