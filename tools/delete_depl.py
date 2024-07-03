@@ -164,7 +164,7 @@ try:
                 except botocore.exceptions.ClientError as error:
                     print(error)
             try:
-            iam.delete_role(RoleName=role['RoleName'])
+                iam.delete_role(RoleName=role['RoleName'])
                 print ('Deleted the following Role : ',role['RoleName'])
             except botocore.exceptions.ClientError as error:
                 print(error)
