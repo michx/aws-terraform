@@ -154,22 +154,21 @@ policy_list=[]
 roles=iam.list_roles()['Roles']
 for items in iam.list_policies(PathPrefix='/')['Policies']:
     policy_list.append({items['PolicyName']:items['Arn']})
-try:
-    for role in roles:
-        if defined_cluster_name in role['RoleName']:
-            attached_policy_names=iam.list_role_policies(RoleName=role['RoleName'])
-            for policy in attached_policy_names:
-                try:
-                    iam.detach_role_policy(RoleName=role['RoleName'],PolicyArn=policy_list[policy])
-                except botocore.exceptions.ClientError as error:
-                    print(error)
+
+for role in roles:
+    if defined_cluster_name in role['RoleName']:
+        attached_policy_names=iam.list_role_policies(RoleName=role['RoleName'])
+        for policy in attached_policy_names:
             try:
-                iam.delete_role(RoleName=role['RoleName'])
-                print ('Deleted the following Role : ',role['RoleName'])
+                iam.detach_role_policy(RoleName=role['RoleName'],PolicyArn=policy_list[policy])
             except botocore.exceptions.ClientError as error:
                 print(error)
-except:
-    print ('EBSCSI Role is not here !!')
+        try:
+            iam.delete_role(RoleName=role['RoleName'])
+            print ('Deleted the following Role : ',role['RoleName'])
+        except botocore.exceptions.ClientError as error:
+            print(error)
+
 if role_found==False:
     print ('EKS Role is not here !!') 
 try:
