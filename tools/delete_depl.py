@@ -157,7 +157,7 @@ for items in iam.list_policies(PathPrefix='/')['Policies']:
 
 for role in roles:
     if defined_cluster_name in role['RoleName']:
-        attached_policy_names=iam.list_role_policies(RoleName=role['RoleName'])['PolicyNamesbug co']
+        attached_policy_names=iam.list_role_policies(RoleName=role['RoleName'])['PolicyNames']
         for policy in attached_policy_names:
             try:
                 iam.detach_role_policy(RoleName=role['RoleName'],PolicyArn=policy_list[policy])
