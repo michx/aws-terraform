@@ -150,10 +150,10 @@ if 'defined_Vpc_id' in locals():
 # Deleting IAM Roles
 iam=boto3.client('iam')
 role_found=False
-policy_list=[]
+policy_list={}
 roles=iam.list_roles()['Roles']
 for items in iam.list_policies(PathPrefix='/')['Policies']:
-    policy_list.append({items['PolicyName']:items['Arn']})
+    policy_list[items['PolicyName']]=items['Arn']
 
 for role in roles:
     if defined_cluster_name in role['RoleName']:
