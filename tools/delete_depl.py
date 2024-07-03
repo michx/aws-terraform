@@ -153,8 +153,9 @@ role_found=False
 policy_list={}
 roles=iam.list_roles()['Roles']
 for items in iam.list_policies(PathPrefix='/')['Policies']:
-    policy_list[items['PolicyName']]=items['Arn']
-
+    if defined_vpc_name in items['PolicyName']:
+        policy_list[items['PolicyName']]=items['Arn']
+        print ('Found the following created policies : ',policy_list[items['PolicyName']],' : ', items['Arn'])
 for role in roles:
     if defined_cluster_name in role['RoleName']:
         attached_policy_names=iam.list_role_policies(RoleName=role['RoleName'])['PolicyNames']
