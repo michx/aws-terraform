@@ -172,7 +172,7 @@ for role in roles:
         for policy in attached_inline_policy_names:
             try:
                 iam_inline = boto3.resource('iam')
-                role_policy = iam_inline.RolePolicy(role['RoleName'],policy)
+                role_policy = iam_inline.RolePolicy(role['RoleName'],policy).delete()
                 print ('Successfully detaching policy ',policy,' from ',role['RoleName'])
             except botocore.exceptions.ClientError as error:
                 print(error)
