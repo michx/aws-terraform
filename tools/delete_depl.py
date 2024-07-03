@@ -158,7 +158,7 @@ for role in roles:
     if defined_cluster_name in role['RoleName']:
         print ('Trying to delete role ', role['RoleName'])
         attached_policy_names={}
-        attached_policy_names=iam.list_attached_role_policies(RoleName=role['RoleName'])['AttachedPolicies']:
+        attached_policy_names=iam.list_attached_role_policies(RoleName=role['RoleName'])['AttachedPolicies']
         print ('Attached Policies to the role :',attached_policy_names)
         for policy in attached_policy_names:
             try:
