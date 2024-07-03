@@ -147,6 +147,19 @@ if 'defined_Vpc_id' in locals():
     except botocore.exceptions.ClientError as error:
         print(error)
 
+# Deleting Elastic IPs
+response=network_client.describe_addresses()['Addresses']
+for ips in response:
+    if 'Tags' in ips.keys():
+        for tags in ips['Tags']:
+            if tags['Key']=='Name' and defined_vpc_name in tags['Value']:
+                try:
+                    network_client.release_address(AllocationId=ips['AllocationId'])
+                    print ('Elastic IP deleted ',ips['AllocationId'])
+                except botocore.exceptions.ClientError as error:
+                    print (error)
+
+
 # Deleting IAM Roles
 iam=boto3.client('iam')
 role_found=False
