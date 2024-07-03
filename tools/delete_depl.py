@@ -153,16 +153,16 @@ role_found=False
 policy_list={}
 roles=iam.list_roles()['Roles']
 for items in iam.list_policies(PathPrefix='/')['Policies']:
-    if defined_cluster_name in items['PolicyName']:
         policy_list[items['PolicyName']]=items['Arn']
 for role in roles:
     if defined_cluster_name in role['RoleName']:
         print ('Trying to delete role ', role['RoleName'])
-        attached_policy_names=iam.list_attached_role_policies(RoleName=role['RoleName'])['AttachedPolicies']
+        attached_policy_names={}
+        attached_policy_names=iam.list_attached_role_policies(RoleName=role['RoleName'])['AttachedPolicies']:
         print ('Attached Policies to the role :',attached_policy_names)
         for policy in attached_policy_names:
             try:
-                iam.detach_role_policy(RoleName=role['RoleName'],PolicyArn=policy_list[policy])
+                iam.detach_role_policy(RoleName=role['RoleName'],PolicyArn=policy[['PolicyArn']])
                 print ('Successfully detaching policy ',policy,' from ',role['RoleName'])
             except botocore.exceptions.ClientError as error:
                 print(error)
