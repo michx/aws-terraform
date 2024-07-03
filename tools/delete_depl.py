@@ -109,7 +109,7 @@ if 'defined_Vpc_id' in locals():
     routing_tables=network_client.describe_route_tables(Filters=[{'Name':'vpc-id','Values':[defined_Vpc_id]}])
     for rt in routing_tables['RouteTables']:
         rt_main=False
-        if rt['Associations']:
+        if rt['Associations']: # Cannot delete a Route Table which is main. Attribute contained in [Association][Main]
             for items in rt['Associations']:
                 if items['Main']==True:
                     rt_main=True
@@ -128,10 +128,10 @@ if 'defined_Vpc_id' in locals():
     # Deleting Security Groups
     security_groups=network_client.describe_security_groups(Filters=[{'Name':'vpc-id','Values':[defined_Vpc_id]}])
     for sg in security_groups['SecurityGroups']:
-        if sg['GroupName']!='default':
+        if sg['GroupName']!='default': #Cannot delete a default security group, skipping it
             for items in network_client.describe_security_group_rules(Filters=[{'Name':'group-id','Values':[sg['GroupId']]}])['SecurityGroupRules']:
                 if 'ReferencedGroupInfo' in items.keys() and items['ReferencedGroupInfo']['GroupId']!=sg['GroupId']:
-                    try:
+                    try: # Need to removed security group ingress rules that are referenced to other SGs
                         network_client.revoke_security_group_ingress(SecurityGroupRuleIds=[items['SecurityGroupRuleId']],GroupId=sg['GroupId'])
                     except botocore.exceptions.ClientError as error:
                         print (error)
@@ -142,7 +142,7 @@ if 'defined_Vpc_id' in locals():
                 print (error)
     # Deleting VPC
     try:
-        network_client.delete_vpc(VpcId=defined_Vpc_id)
+        network_client.delete_vpc(VpcId=defined_Vpc_id) #Finally deleting VPC
         print ('Deleted the VPC: ', defined_vpc_name)
     except botocore.exceptions.ClientError as error:
         print(error)
@@ -152,24 +152,25 @@ iam=boto3.client('iam')
 role_found=False
 policy_list={}
 roles=iam.list_roles()['Roles']
+# Get a list of all policies and Arn associated
 for items in iam.list_policies(PathPrefix='/')['Policies']:
         policy_list[items['PolicyName']]=items['Arn']
 for role in roles:
     if defined_cluster_name in role['RoleName']:
         print ('Trying to delete role ', role['RoleName'])
         attached_policy_names={}
-        attached_policy_names=iam.list_attached_role_policies(RoleName=role['RoleName'])['AttachedPolicies']
-        attached_inline_policy_names=iam.list_role_policies(RoleName=role['RoleName'])['PolicyNames']
+        attached_policy_names=iam.list_attached_role_policies(RoleName=role['RoleName'])['AttachedPolicies'] # Search for attached managed policies
+        attached_inline_policy_names=iam.list_role_policies(RoleName=role['RoleName'])['PolicyNames'] # Search for attached inline policies
         print ('Attached Standard Policies to the role :',attached_policy_names)
         print ('Attached Inline Policies to the role :',attached_inline_policy_names)
-        for policy in attached_policy_names:
+        for policy in attached_policy_names: #Detaching managed policies
             try:
                 iam.detach_role_policy(RoleName=role['RoleName'],PolicyArn=policy['PolicyArn'])
                 print ('Successfully detaching policy ',policy,' from ',role['RoleName'])
             except botocore.exceptions.ClientError as error:
                 print(error)
                 print ('Error in Detaching Policy ',policy,' from role ',role['RoleName'])
-        for policy in attached_inline_policy_names:
+        for policy in attached_inline_policy_names: #Deleting inline policies
             try:
                 iam_inline = boto3.resource('iam')
                 role_policy = iam_inline.RolePolicy(role['RoleName'],policy).delete()
@@ -178,7 +179,7 @@ for role in roles:
                 print(error)
                 print ('Error in Detaching Policy ',policy,' from role ',role['RoleName'])
         try:
-            iam.delete_role(RoleName=role['RoleName'])
+            iam.delete_role(RoleName=role['RoleName']) # Deleting finally role
             print ('Deleted the following Role : ',role['RoleName'])
         except botocore.exceptions.ClientError as error:
             print(error)
