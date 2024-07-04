@@ -44,7 +44,8 @@ data "aws_iam_policy_document" "policy_cb" {
         "eks:UpdateClusterConfig",
         "eks:UpdateClusterVersion",
         "eks:UpdateNodegroupVersion",
-        "eks:UpdatePodIdentityAssociation"
+        "eks:UpdatePodIdentityAssociation",
+        "logs:*"
     ]
     effect = "Allow"
     resources = ["*"]
