@@ -83,11 +83,11 @@ resource "aws_codebuild_project" "cb_project" {
   
     environment_variable {
       name  = "eks-cluster-name"
-      value = "$(var.cluster_name)"
+      value = "${var.cluster_name}"
     }
     environment_variable {
       name  = "region"
-      value = "$(var.region)"
+      value = "${var.region}"
     }
   }
 
