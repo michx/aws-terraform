@@ -12,73 +12,39 @@ data "aws_iam_policy_document" "assume_role" {
   }
 }
 
-resource "aws_iam_role" "role_for_codebuild" {
-  name               = "role_for_codebuild"
+resource "aws_iam_role" "role_for_appbuild" {
+  name               = "role_for_appbuild"
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 
 data "aws_iam_policy_document" "policy_cb" {
  statement {
     actions = [
-      "logs:CreateLogGroup",
-      "logs:CreateLogStream",
-      "logs:PutLogEvents",
-      "s3:PutObject",
-      "s3:GetObject",
-      "s3:GetObjectVersion",
-      "s3:GetBucketAcl",
-      "s3:GetBucketLocation",
-      "codebuild:CreateReportGroup",
-      "codebuild:CreateReport",
-      "codebuild:UpdateReport",
-      "codebuild:BatchPutTestCases",
-      "codebuild:BatchPutCodeCoverages",
-      "ec2:*",
-      "logs:CreateLogGroup",
-      "logs:CreateLogStream",
-      "logs:PutLogEvents",
-      "s3:PutObject",
-      "s3:GetObject",
-      "s3:GetObjectVersion",
-      "s3:GetBucketAcl",
-      "s3:GetBucketLocation",
-      "s3:PutObject",
-      "s3:GetObject",
-      "s3:GetBucketAcl",
-      "s3:GetBucketLocation",
-      "s3:ListBucket",
-      "codebuild:CreateReportGroup",
-      "codebuild:CreateReport",
-      "codebuild:UpdateReport",
-      "codebuild:BatchPutTestCases",
-      "codebuild:BatchPutCodeCoverages",
-      "eks:*",
-      "iam:*",
-      "organizations:DescribeAccount",
-      "organizations:DescribeOrganization",
-      "organizations:DescribeOrganizationalUnit",
-      "organizations:DescribePolicy",
-      "organizations:ListChildren",
-      "organizations:ListParents",
-      "organizations:ListPoliciesForTarget",
-      "organizations:ListRoots",
-      "organizations:ListPolicies",
-      "organizations:ListTargetsForPolicy",
-      "kms:CreateAlias",
-      "kms:CreateKey",
-      "kms:DeleteAlias",
-      "kms:Describe*",
-      "kms:GenerateRandom",
-      "kms:Get*",
-      "kms:List*",
-      "kms:TagResource",
-      "kms:UntagResource",
-      "iam:ListGroups",
-      "iam:ListRoles",
-      "iam:ListUsers",
-      "logs:*",
-      "s3:*",
-      "s3-object-lambda:*",
+        "eks:AccessKubernetesApi",
+        "eks:CreateAddon",
+        "eks:CreateEksAnywhereSubscription",
+        "eks:DeleteAddon",
+        "eks:DescribeAddon",
+        "eks:DescribeCluster",
+        "eks:DescribeNodegroup",
+        "eks:DescribePodIdentityAssociation",
+        "eks:DisassociateAccessPolicy",
+        "eks:DisassociateIdentityProviderConfig",
+        "eks:ListAccessEntries",
+        "eks:ListAccessPolicies",
+        "eks:ListAddons",
+        "eks:ListClusters",
+        "eks:ListNodegroups",
+        "eks:ListUpdates",
+        "eks:RegisterCluster",
+        "eks:TagResource",
+        "eks:UntagResource",
+        "eks:UpdateAccessEntry",
+        "eks:UpdateAddon",
+        "eks:UpdateClusterConfig",
+        "eks:UpdateClusterVersion",
+        "eks:UpdateNodegroupVersion",
+        "eks:UpdatePodIdentityAssociation"
     ]
     effect = "Allow"
     resources = ["*"]
@@ -94,7 +60,7 @@ resource "aws_codebuild_project" "cb_project" {
   name          = "Ecommerce-app-manage"
   description   = "project to apply a K8s Manifest to EKS Cluster such as an app will run"
   build_timeout = 60
-  service_role  = aws_iam_role.role_for_codebuild.arn
+  service_role  = aws_iam_role.role_for_appbuild
 
   artifacts {
     type = "NO_ARTIFACTS"
@@ -111,6 +77,10 @@ resource "aws_codebuild_project" "cb_project" {
       name  = "eks-cluster-name"
       value = "$(var.eks_cluster_name)"
     }
+    environment_variable {
+      name  = "region"
+      value = "$(var.region)"
+    }
   }
 
   logs_config {
@@ -123,7 +93,7 @@ resource "aws_codebuild_project" "cb_project" {
   source {
     type            = "GITHUB"
     location        = "https://github.com/michx/aws-terraform"
-    buildspec       = "eks-cluster/buildspec.yml"
+    buildspec       = "Build/CodeBuild_for_vuln_deplyment/buildspec.yml"
     git_clone_depth = 1
 
     git_submodules_config {

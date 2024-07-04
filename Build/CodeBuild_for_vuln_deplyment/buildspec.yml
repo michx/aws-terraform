@@ -3,5 +3,5 @@ version: 0.2
 phases:
   build:
     commands:
-       - aws eks update-kubeconfig --region  --name eks-badapp
+       - aws eks update-kubeconfig --region $region --name $eks_cluster_name
        - cd kubernetes-manifests && kubectl apply -f .
