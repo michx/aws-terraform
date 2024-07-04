@@ -6,3 +6,9 @@ variable "region" {
   type        = string
   default     = "us-east-1"
 }
+
+variable "cluster" {
+  description = "Name of created EKS Cluster"
+  type        = string
+  default     = "eks-badapp"
+}

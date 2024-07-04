@@ -16,7 +16,7 @@ for key in response['Keys']:
     if aliases:=kms_client.list_aliases(KeyId=key['KeyId']):
         for alias in aliases['Aliases']:
             if alias['AliasName']==str('alias/eks/'+defined_cluster_name):
-                print ('Found Key for cluster ', defined_cluster_name,' : ',alias['AliasId'])
+                print ('Found Key for cluster ', defined_cluster_name,' : ',alias['AliasName'])
                 key_found=True
 if key_found==False:
     print ("No KMS key found for the EKS cluster")
