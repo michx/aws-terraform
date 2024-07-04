@@ -60,7 +60,7 @@ resource "aws_codebuild_project" "cb_project" {
   name          = "Ecommerce-app-manage"
   description   = "project to apply a K8s Manifest to EKS Cluster such as an app will run"
   build_timeout = 60
-  service_role  = aws_iam_role.role_for_appbuild
+  service_role  = aws_iam_role.role_for_appbuild.arn
 
   artifacts {
     type = "NO_ARTIFACTS"
