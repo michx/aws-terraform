@@ -12,6 +12,13 @@ data "aws_iam_policy_document" "assume_role" {
   }
 }
 
+variable "cluster_name" {
+  type = string
+}
+
+variable "region" {
+  type = string
+}
 resource "aws_iam_role" "role_for_appbuild" {
   name               = "role_for_appbuild"
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
