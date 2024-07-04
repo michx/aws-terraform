@@ -3,5 +3,5 @@ version: 0.2
 phases:
   build:
     commands:
-       - aws eks update-kubeconfig --region $region --name $eks_cluster_name
+       - aws eks update-kubeconfig --region $region --name $eks-cluster-name
        - cd kubernetes-manifests && kubectl apply -f .
