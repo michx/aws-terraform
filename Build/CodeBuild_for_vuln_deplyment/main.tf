@@ -52,7 +52,7 @@ data "aws_iam_policy_document" "policy_cb" {
 }
 
 resource "aws_iam_role_policy" "codebuild_role_policy" {
-  role   = aws_iam_role.role_for_codebuild.name
+  role   = aws_iam_role.role_for_appbuild.name
   policy = data.aws_iam_policy_document.policy_cb.json
 }
 
