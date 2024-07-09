@@ -6,5 +6,6 @@ phases:
        - echo "Applying the following to EKS cluster..."
        - echo $eksclustername
        - echo $region
+       - aws sts get-caller-identity
        - aws eks update-kubeconfig --region $region --name $eksclustername
        - cd kubernetes-manifests && kubectl apply -f .
