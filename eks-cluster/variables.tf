@@ -10,5 +10,5 @@ variable "region" {
 variable "cluster" {
   description = "Name of created EKS Cluster"
   type        = string
-  default     = "eks-badapp"
+  default     = "eksbadapp"
 }
