@@ -2,16 +2,6 @@ version: 0.2
 
 phases:
   build:
-   steps:
-    - name: "Configure AWS credentials"
-        id: creds
-        uses: aws-actions/configure-aws-credentials@v3
-        with:
-          aws-region: ${{ env.$region }}
-          output-credentials: true
-    - name: "Login to Amazon ECR"
-        id: login-ecr
-    - name: "Apply configuration"
       commands:
        - echo "Applying the following to EKS cluster..."
        - echo $eksclustername
