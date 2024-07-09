@@ -4,7 +4,7 @@ phases:
   build:
     commands:
        - echo "Applying the following to EKS cluster..."
-       - echo $eks-cluster-name
+       - echo $eksclustername
        - echo $region
-       - aws eks update-kubeconfig --region $region --name $eks-cluster-name
+       - aws eks update-kubeconfig --region $region --name $eksclustername
        - cd kubernetes-manifests && kubectl apply -f .

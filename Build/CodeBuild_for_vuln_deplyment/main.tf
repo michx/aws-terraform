@@ -82,7 +82,7 @@ resource "aws_codebuild_project" "cb_project" {
     image_pull_credentials_type = "CODEBUILD"
   
     environment_variable {
-      name  = "eks-cluster-name"
+      name  = "eksclustername"
       value = "${var.cluster_name}"
     }
     environment_variable {
