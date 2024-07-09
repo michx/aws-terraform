@@ -7,4 +7,4 @@ phases:
        - echo $eksclustername
        - echo $region
        - aws eks update-kubeconfig --region $region --name $eksclustername
-       - cd kubernetes-manifests && kubectl apply -f 
+       - cd kubernetes-manifests && kubectl apply -f .
