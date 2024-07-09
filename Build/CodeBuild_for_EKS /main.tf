@@ -13,7 +13,7 @@ data "aws_iam_policy_document" "assume_role" {
 }
 
 resource "aws_iam_role" "role_for_codebuild" {
-  name               = "role_for_codebuild"
+  name               = "role_for_codebuild_${var.cluster}"
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 
