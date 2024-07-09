@@ -69,7 +69,7 @@ module "eks" {
 
   eks_managed_node_groups = {
     one = {
-      name = "node-group-$(var.cluster)"
+      name = "node-group-${var.cluster}"
 
       instance_types = ["t3.small"]
 
