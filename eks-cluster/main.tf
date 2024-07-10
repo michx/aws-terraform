@@ -5,6 +5,7 @@ provider "aws" {
   region = var.region
 }
 
+
 # Filter out local zones, which are not currently supported 
 # with managed node groups
 data "aws_availability_zones" "available" {
@@ -13,6 +14,8 @@ data "aws_availability_zones" "available" {
     values = ["opt-in-not-required"]
   }
 }
+
+data "aws_caller_identity" "current" {}
 
 locals {
   cluster_name = "eks-badapp"
@@ -75,7 +78,7 @@ module "eks" {
 
   cluster_endpoint_public_access           = true
   enable_cluster_creator_admin_permissions = true
-
+  authentication_mode = "API_AND_CONFIG_MAP"
 
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.private_subnets
@@ -111,6 +114,7 @@ module "eks-auth" {
   aws_auth_roles = [
     {
       username = "eks_user_role"
+      rolearn="arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${var.my_role_name}"
       groups   = ["system:masters"]
     },
   ]
