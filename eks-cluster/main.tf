@@ -106,7 +106,7 @@ module "eks" {
 }
 
 module "eks-auth" {
-  source  = "./modules/aws-auth"
+  source  = "./eks/modules/aws-auth"
   #version = "~> 20.0"
 
   manage_aws_auth_configmap = true
