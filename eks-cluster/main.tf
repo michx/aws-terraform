@@ -114,7 +114,7 @@ module "eks-auth" {
   aws_auth_roles = [
     {
       username = "eks_user_role"
-      rolearn="arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${var.my_role_name}"
+      rolearn="arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/eks_user_role"
       groups   = ["system:masters"]
     },
   ]
