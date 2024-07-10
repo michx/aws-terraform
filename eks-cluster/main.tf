@@ -23,6 +23,24 @@ resource "random_string" "suffix" {
   special = false
 }
 
+resource "aws_iam_role" "eks_user_role" {
+  name = "eks_user_role"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "eks.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+}
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "5.8.1"
@@ -50,7 +68,7 @@ module "vpc" {
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "20.8.5"
+  version = "20.17.2"
 
   cluster_name    = local.cluster_name
   cluster_version = "1.29"
@@ -61,6 +79,7 @@ module "eks" {
 
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.private_subnets
+
 
   eks_managed_node_group_defaults = {
     ami_type = "AL2_x86_64"
@@ -79,6 +98,20 @@ module "eks" {
     }
 
   }
+
+  
 }
 
+module "eks-auth" {
+  source  = "terraform-aws-modules/eks/aws//modules/aws-auth"
+  version = "~> 20.0"
 
+  manage_aws_auth_configmap = true
+
+  aws_auth_roles = [
+    {
+      username = "eks_user_role"
+      groups   = ["system:masters"]
+    },
+  ]
+}
