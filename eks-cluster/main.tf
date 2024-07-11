@@ -105,7 +105,6 @@ module "eks" {
   access_entries = {
     # One access entry with a policy associated
     example = {
-      kubernetes_groups = ["system:masters"]
       principal_arn     = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/eks_user_role"
     }
   }
