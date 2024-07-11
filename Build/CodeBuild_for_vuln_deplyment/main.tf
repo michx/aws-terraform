@@ -21,6 +21,11 @@ variable "cluster_name" {
 variable "region" {
   type = string
 }
+
+variable "rolearn" {
+  type = string
+}
+
 resource "aws_iam_role" "role_for_appbuild" {
   name               = "role_for_appbuild"
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
@@ -89,6 +94,10 @@ resource "aws_codebuild_project" "cb_project" {
     environment_variable {
       name  = "region"
       value = "${var.region}"
+    }
+    environment_variable {
+      name  = "rolearn"
+      value = "${var.rolearn}"
     }
   }
 

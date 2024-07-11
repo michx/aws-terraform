@@ -7,5 +7,5 @@ phases:
        - echo $eksclustername
        - echo $region
        - aws sts get-caller-identity
-       - aws eks update-kubeconfig --region $region --name $eksclustername
+       - aws eks update-kubeconfig --region $region --name $eksclustername --role-arn $rolearn
        - cd kubernetes-manifests && kubectl apply -f .
