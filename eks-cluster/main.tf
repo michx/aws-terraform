@@ -70,7 +70,7 @@ module "vpc" {
 } 
 
 module "eks" {
-  source  = "terraform-aws-modules/eks/aws"
+  source  = "terraform-aws-modules/eks/aws//modules/aws-auth"
   version = "20.8.5"
 
   cluster_name    = local.cluster_name
@@ -102,10 +102,7 @@ module "eks" {
 
   }
 
-  
-}
-
-module "eks-auth" {
+  aws-auth =  {
   source  = "terraform-aws-modules/eks/aws//modules/aws-auth"
   #version = "~> 20.0"
 
@@ -119,3 +116,7 @@ module "eks-auth" {
     },
   ]
 }
+
+  
+}
+
