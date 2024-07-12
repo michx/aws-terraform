@@ -115,11 +115,7 @@ module "eks" {
       principal_arn     = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/eks_user_role"
       policy_associations = {
         example = {
-          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSViewPolicy"
-          access_scope = {
-            namespaces = ["default"]
-            type       = "namespace"
-          }
+          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
         }
       }
     
