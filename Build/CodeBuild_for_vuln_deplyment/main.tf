@@ -26,10 +26,12 @@ data "aws_iam_policy_document" "assume_role" {
 
 variable "cluster_name" {
   type = string
+  default = "eks-badapp"
 }
 
 variable "region" {
   type = string
+  default = "us-east-1"
 }
 
 
