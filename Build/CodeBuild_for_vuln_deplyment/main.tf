@@ -22,9 +22,6 @@ variable "region" {
   type = string
 }
 
-variable "rolearn" {
-  type = string
-}
 
 resource "aws_iam_role" "role_for_appbuild" {
   name               = "role_for_appbuild"
