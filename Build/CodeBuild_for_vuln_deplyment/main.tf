@@ -97,7 +97,7 @@ resource "aws_codebuild_project" "cb_project" {
     }
     environment_variable {
       name  = "rolearn"
-      value = "${var.rolearn}"
+      value = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/eks_user_role"
     }
   }
 
