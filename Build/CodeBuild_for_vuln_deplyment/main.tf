@@ -1,4 +1,4 @@
-
+data "aws_caller_identity" "current" {}
 data "aws_iam_policy_document" "assume_role" {
   statement {
     effect = "Allow"
@@ -10,9 +10,19 @@ data "aws_iam_policy_document" "assume_role" {
 
     actions = ["sts:AssumeRole"]
   }
+  statement {
+    effect = "Allow"
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/eks_user_role"]
+    }
+
+    actions = ["sts:AssumeRole"]
+  }
 }
 
-data "aws_caller_identity" "current" {}
+
 
 variable "cluster_name" {
   type = string
