@@ -51,6 +51,7 @@ resource "aws_iam_role" "eks_user_role" {
 }
 EOF
 }
+
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "5.8.1"

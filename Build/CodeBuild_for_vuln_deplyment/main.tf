@@ -75,9 +75,23 @@ data "aws_iam_policy_document" "policy_cb" {
   }
 }
 
+data "aws_iam_policy_document" "policy_eks_user" {
+ statement {
+            sid = "Allow this user to assume role of eks-user"
+            effect =  "Allow"
+            actions = "sts:AssumeRole"
+            resources =  "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/eks_user_role"
+        }
+}
+
 resource "aws_iam_role_policy" "codebuild_role_policy" {
   role   = aws_iam_role.role_for_appbuild.name
   policy = data.aws_iam_policy_document.policy_cb.json
+}
+
+resource "aws_iam_role_policy" "codebuild_role_policy_for_eks_role" {
+  role   = aws_iam_role.role_for_appbuild.name
+  policy = data.aws_iam_policy_document.policy_eks_user.json
 }
 
 resource "aws_codebuild_project" "cb_project" {
