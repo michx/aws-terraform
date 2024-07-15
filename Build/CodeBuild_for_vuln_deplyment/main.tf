@@ -83,7 +83,7 @@ data "aws_iam_policy_document" "policy_to_eks_user" {
         }
 }
 
-data "aws_iam_policy_role_document "policy_in_eks_user {
+data "aws_iam_policy_role_document" "policy_in_eks_user" {
    statement {
             effect =  "Allow"
             Principal = {
