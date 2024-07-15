@@ -83,7 +83,7 @@ data "aws_iam_policy_document" "policy_to_eks_user" {
         }
 }
 
-data "aws_iam_policy_document" "policy_in_eks_user" {
+data "aws_iam_policy_document" "policy_document_in_eks_user" {
    statement {
             effect =  "Allow"
             principals  {
@@ -92,6 +92,12 @@ data "aws_iam_policy_document" "policy_in_eks_user" {
             }
             actions = ["sts:AssumeRole"]
         }
+}
+
+resource "aws_iam_policy" "policy_in_eks_user" {
+  name        = "test-policy"
+  description = "A test policy"
+  policy      = data.aws_iam_policy_document.policy_document_in_eks_user.json
 }
 
 resource "aws_iam_role_policy_attachment" "role_for_eks_user" {
