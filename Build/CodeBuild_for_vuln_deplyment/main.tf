@@ -83,19 +83,20 @@ data "aws_iam_policy_document" "policy_to_eks_user" {
         }
 }
 
-data "aws_iam_policy_role_document" "policy_in_eks_user" {
+data "aws_iam_policy_document" "policy_in_eks_user" {
    statement {
             effect =  "Allow"
-            Principal = {
-            "AWS": "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/role_for_appbuild"
+            principals  {
+              type = "AWS"
+              identifiers=[ "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/role_for_appbuild"]
             }
             actions = ["sts:AssumeRole"]
         }
 }
 
-resource "aws_iam_role_policy" "role_for_eks_user" {
-  role   = "eks_user_role"
-  policy = data.aws_iam_policy_document.policy_in_eks_user.json
+resource "aws_iam_role_policy_attachment" "role_for_eks_user" {
+  role       = eks_user_role
+  policy_arn = data.aws_iam_policy_document.policy_in_eks_user
 }
 
 resource "aws_iam_role_policy" "codebuild_role_policy" {
