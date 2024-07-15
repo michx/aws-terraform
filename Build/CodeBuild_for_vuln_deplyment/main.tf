@@ -79,7 +79,7 @@ data "aws_iam_policy_document" "policy_eks_user" {
  statement {
             sid = "Allow this user to assume role of eks-user"
             effect =  "Allow"
-            actions = "sts:AssumeRole"
+            actions = ["sts:AssumeRole"]
             resources =  ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/eks_user_role"]
         }
 }
