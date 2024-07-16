@@ -75,16 +75,18 @@ for vpc in response['Vpcs']:
 if 'defined_Vpc_id' in locals():
     # Deleting load balancers
     try:
-        load_balancers=elb.describe_load_balancers(Filters=[{'Name':'VPCId','Values':[defined_Vpc_id]}])['LoadBalancerDescriptions']
+        load_balancers=elb.describe_load_balancers()['LoadBalancerDescriptions']
         print('Found Load Balancers : ',len(load_balancers))
     except botocore.exceptions.ClientError as error:
         print (error)
     for lb in load_balancers:
-        try:
-            elb.delete_load_balancer(LoadBalancerName=lb['LoadBalancerName'])
-        except botocore.exceptions.ClientError as error:
-            print (error)
-    # Deletin subnets
+        if lb['VPCId']==defined_Vpc_id:
+            try:
+                elb.delete_load_balancer(LoadBalancerName=lb['LoadBalancerName'])
+                print ("Successfully delete ELB ",lb['LoadBalancerName'])
+            except botocore.exceptions.ClientError as error:
+                print (error)
+    # Deleting subnets
     subnets=network_client.describe_subnets(Filters=[{'Name':'vpc-id','Values':[defined_Vpc_id]}])['Subnets']
     for subnet in subnets:
         if subnet['VpcId']==defined_Vpc_id:
