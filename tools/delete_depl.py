@@ -184,7 +184,7 @@ roles=iam.list_roles()['Roles']
 for items in iam.list_policies(PathPrefix='/')['Policies']:
         policy_list[items['PolicyName']]=items['Arn']
 for role in roles:
-    if defined_cluster_name in role['RoleName']:
+    if defined_cluster_name in role['RoleName'] or role['RoleName']=='eks_user_role':
         print ('Trying to delete role ', role['RoleName'])
         attached_policy_names={}
         attached_policy_names=iam.list_attached_role_policies(RoleName=role['RoleName'])['AttachedPolicies'] # Search for attached managed policies
