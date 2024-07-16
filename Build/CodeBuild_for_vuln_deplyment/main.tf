@@ -99,7 +99,7 @@ resource "aws_iam_policy" "policy_in_eks_user" {
 }
 
 resource "aws_iam_role" "role_in_eks_user" {
-  role       = "eks_user_role"
+  name       = "eks_user_role"
   assume_role_policy = data.aws_iam_policy_document.policy_document_in_eks_user.json
 }
 
