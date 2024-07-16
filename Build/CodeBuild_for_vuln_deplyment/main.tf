@@ -83,29 +83,6 @@ data "aws_iam_policy_document" "policy_cb" {
 }
 
 
-
-data "aws_iam_policy_document" "policy_document_in_eks_user" {
-   statement {
-            effect =  "Allow"
-            principals  {
-              type = "AWS"
-              identifiers=[ "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/role_for_appbuild"]
-            }
-            actions = ["sts:AssumeRole"]
-        }
-}
-
-resource "aws_iam_policy" "policy_in_eks_user" {
-  name        = "test-policy"
-  description = "A test policy"
-  policy      = data.aws_iam_policy_document.policy_document_in_eks_user.json
-}
-
-resource "aws_iam_role" "eks_user_role" {
-  name       = "eks_user_role"
-  assume_role_policy = data.aws_iam_policy_document.policy_document_in_eks_user.json
-}
-
 resource "aws_iam_role_policy" "codebuild_role_policy" {
   role   = aws_iam_role.role_for_appbuild.name
   policy = data.aws_iam_policy_document.policy_cb.json
