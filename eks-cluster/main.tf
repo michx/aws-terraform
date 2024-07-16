@@ -47,7 +47,9 @@ resource "aws_iam_role" "eks_user_role" {
     },
     {
       "Effect": "Allow",
-      "Principal": {},
+      "Principal": {
+          "AWS": "*"
+      },
       "Action": "sts:AssumeRole"
     }
   ]
