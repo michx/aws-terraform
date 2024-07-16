@@ -21,11 +21,6 @@ locals {
   arn_eks_user_role = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/role_for_appbuild"
 }
 
-variable "eks_role_arn" {
-  description = "ARN Reference to role used to manage EKS cluster operations (i.e. add a service)"
-  type        = string
-  default     = local.arn_eks_user_role
-}
 
 resource "random_string" "suffix" {
   length  = 8
@@ -57,7 +52,7 @@ resource "aws_iam_role" "eks_user_role" {
       "Sid": "Statement1",
       "Effect": "Allow",
       "Principal": {
-          "AWS": "$(var.eks_role_arn)"
+          "AWS": "${local.arn_eks_user_role}"
       },
       "Action": "sts:AssumeRole"
     },
