@@ -1,3 +1,17 @@
+
+
+variable "cluster_name" {
+  type = string
+  default = "eks-badapp"
+}
+
+variable "region" {
+  type = string
+  default = "us-east-1"
+}
+
+
+
 data "aws_caller_identity" "current" {}
 data "aws_iam_policy_document" "assume_role" {
   statement {
@@ -22,17 +36,6 @@ data "aws_iam_policy_document" "assume_role" {
   }
 }
 
-
-
-variable "cluster_name" {
-  type = string
-  default = "eks-badapp"
-}
-
-variable "region" {
-  type = string
-  default = "us-east-1"
-}
 
 
 resource "aws_iam_role" "role_for_appbuild" {
@@ -75,13 +78,7 @@ data "aws_iam_policy_document" "policy_cb" {
   }
 }
 
-data "aws_iam_policy_document" "policy_to_eks_user" {
- statement {
-            effect =  "Allow"
-            actions = ["sts:AssumeRole"]
-            resources =  ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/eks_user_role"]
-        }
-}
+
 
 data "aws_iam_policy_document" "policy_in_eks_user" {
    statement {
@@ -94,9 +91,9 @@ data "aws_iam_policy_document" "policy_in_eks_user" {
         }
 }
 
-resource "aws_iam_role_policy_attachment" "role_for_eks_user" {
-  role       = eks_user_role
-  policy_arn = data.aws_iam_policy_document.policy_in_eks_user
+resource "aws_iam_role_policy" "eks_user_role_policy" {
+  role   = "eks_user_role"
+  policy = data.aws_iam_policy_document.policy_in_eks_user.json
 }
 
 resource "aws_iam_role_policy" "codebuild_role_policy" {
@@ -104,10 +101,6 @@ resource "aws_iam_role_policy" "codebuild_role_policy" {
   policy = data.aws_iam_policy_document.policy_cb.json
 }
 
-resource "aws_iam_role_policy" "codebuild_role_policy_for_eks_role" {
-  role   = aws_iam_role.role_for_appbuild.name
-  policy = data.aws_iam_policy_document.policy_to_eks_user.json
-}
 
 resource "aws_codebuild_project" "cb_project" {
   name          = "Ecommerce-app-manage"
