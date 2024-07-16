@@ -83,7 +83,7 @@ if 'defined_Vpc_id' in locals():
         if lb['VPCId']==defined_Vpc_id:
             try:
                 elb.delete_load_balancer(LoadBalancerName=lb['LoadBalancerName'])
-                print ("Successfully delete ELB ",lb['LoadBalancerName'])
+                print ("Successfully deleted ELB ",lb['LoadBalancerName'])
             except botocore.exceptions.ClientError as error:
                 print (error)
     # Deleting subnets
