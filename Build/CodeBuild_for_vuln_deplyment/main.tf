@@ -10,10 +10,16 @@ variable "region" {
   default = "us-east-1"
 }
 
-
+provider "aws" {
+  region = var.region
+}
 
 data "aws_caller_identity" "current" {}
 
+resource "aws_iam_role" "eks_user_role" {
+  name       = "eks_user_role"
+  assume_role_policy = ""
+}
 data "aws_iam_policy_document" "assume_role" {
   statement {
     effect = "Allow"
