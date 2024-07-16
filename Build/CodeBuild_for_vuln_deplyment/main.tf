@@ -98,7 +98,7 @@ resource "aws_iam_policy" "policy_in_eks_user" {
 }
 
 resource "aws_iam_role_policy_attachment" "role_for_eks_user" {
-  role       = eks_user_role
+  role       = "eks_user_role"
   policy_arn = aws_iam_policy.policy_in_eks_user.arn
 }
 
