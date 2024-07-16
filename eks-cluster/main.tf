@@ -17,9 +17,6 @@ data "aws_availability_zones" "available" {
 
 data "aws_caller_identity" "current" {}
 
-locals {
-  arn_eks_user_role = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/role_for_appbuild"
-}
 
 
 resource "random_string" "suffix" {
@@ -49,11 +46,8 @@ resource "aws_iam_role" "eks_user_role" {
       "Action": "sts:AssumeRole"
     },
     {
-      "Sid": "Statement1",
       "Effect": "Allow",
-      "Principal": {
-          "AWS": "${local.arn_eks_user_role}"
-      },
+      "Principal": {},
       "Action": "sts:AssumeRole"
     }
   ]
