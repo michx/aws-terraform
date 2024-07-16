@@ -55,7 +55,7 @@ resource "aws_iam_role" "eks_user_role" {
           "AWS": "${local.arn_eks_user_role}"
       },
       "Action": "sts:AssumeRole"
-    },
+    }
   ]
 }
 EOF
