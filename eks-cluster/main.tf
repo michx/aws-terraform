@@ -17,8 +17,10 @@ data "aws_availability_zones" "available" {
 
 data "aws_caller_identity" "current" {}
 
-locals {
-  cluster_name = "eks-badapp"
+variable "eks_role_arn" {
+  description = "ARN Reference to role used to manage EKS cluster operations (i.e. add a service)"
+  type        = string
+  default     = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/role_for_appbuild"
 }
 
 resource "random_string" "suffix" {
@@ -51,7 +53,7 @@ resource "aws_iam_role" "eks_user_role" {
       "Sid": "Statement1",
       "Effect": "Allow",
       "Principal": {
-          "AWS": "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/role_for_appbuild"
+          "AWS": "$(var.eks_role_arn)"
       },
       "Action": "sts:AssumeRole"
     },
@@ -89,7 +91,7 @@ module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "20.8.5"
 
-  cluster_name    = local.cluster_name
+  cluster_name    = var.cluster
   cluster_version = "1.29"
 
   cluster_endpoint_public_access           = true
