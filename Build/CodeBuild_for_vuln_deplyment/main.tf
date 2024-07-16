@@ -91,10 +91,15 @@ data "aws_iam_policy_document" "policy_document_in_eks_user" {
         }
 }
 
+resource "aws_iam_policy" "policy_in_eks_user" {
+  name        = "test-policy"
+  description = "A test policy"
+  policy      = data.aws_iam_policy_document.policy_document_in_eks_user.json
+}
 
 resource "aws_iam_role_policy_attachment" "role_for_eks_user" {
   role       = eks_user_role
-  policy_arn = data.aws_iam_policy_document.policy_document_in_eks_user.arn
+  policy_arn = aws_iam_policy.policy_in_eks_user.arn
 }
 
 resource "aws_iam_role_policy" "codebuild_role_policy" {
