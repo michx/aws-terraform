@@ -52,7 +52,7 @@ resource "aws_iam_role" "eks_user_role" {
       "Sid": "Statement1",
       "Effect": "Allow",
       "Principal": {
-          "AWS": "${local.arn_eks_user_role}"
+          "AWS": "sssssss"
       },
       "Action": "sts:AssumeRole"
     },
