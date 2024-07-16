@@ -37,7 +37,7 @@ resource "aws_iam_role" "eks_user_role" {
     {
       "Effect": "Allow",
       "Principal": {
-        "Service": "eks.amazonaws.com",
+        "Service": "eks.amazonaws.com"
       },
       "Action": "sts:AssumeRole"
     },
@@ -52,7 +52,7 @@ resource "aws_iam_role" "eks_user_role" {
       "Sid": "Statement1",
       "Effect": "Allow",
       "Principal": {
-          "AWS": "sssssss"
+          "AWS": "${local.arn_eks_user_role}"
       },
       "Action": "sts:AssumeRole"
     },
