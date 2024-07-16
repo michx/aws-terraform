@@ -67,11 +67,24 @@ for group in lgs:
 # Deleting Network Interfaces, Subnets and VPC
 
 network_client=boto3.client('ec2')
+elb=boto3.client('elb')
 response=network_client.describe_vpcs()
 for vpc in response['Vpcs']:
     if vpc['Tags'][0]['Value']==defined_vpc_name:
         defined_Vpc_id=vpc['VpcId']
 if 'defined_Vpc_id' in locals():
+    # Deleting load balancers
+    try:
+        load_balancers=elb.describe_load_balancers(Filters=[{'Name':'VPCId','Values':[defined_Vpc_id]}])['LoadBalancerDescriptions']
+        print('Found Load Balancers : ',len(load_balancers))
+    except botocore.exceptions.ClientError as error:
+        print (error)
+    for lb in load_balancers:
+        try:
+            elb.delete_load_balancer(LoadBalancerName=lb['LoadBalancerName'])
+        except botocore.exceptions.ClientError as error:
+            print (error)
+    # Deletin subnets
     subnets=network_client.describe_subnets(Filters=[{'Name':'vpc-id','Values':[defined_Vpc_id]}])['Subnets']
     for subnet in subnets:
         if subnet['VpcId']==defined_Vpc_id:
