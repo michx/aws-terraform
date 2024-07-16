@@ -6,7 +6,7 @@ phases:
        - echo "Applying the following to EKS cluster..."
        - echo $eksclustername
        - echo $region
-       - aws sts assume-role --role-session-name test --role-arn > creds.json
+       - aws sts assume-role --role-session-name test --role-arn $rolearn > creds.json
        - aws configure set aws_access_key_id = $(cat creds.json | jq .Credentials.AccessKeyId)
        - aws configure set aws_secret_access_key = $(cat creds.json | jq .Credentials.SecretAccessKey)
        - aws configure set aws_session_token = $(cat creds.json | jq .Credentials.SessionToken)
