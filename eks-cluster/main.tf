@@ -17,10 +17,14 @@ data "aws_availability_zones" "available" {
 
 data "aws_caller_identity" "current" {}
 
+locals {
+  arn_eks_user_role = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/role_for_appbuild"
+}
+
 variable "eks_role_arn" {
   description = "ARN Reference to role used to manage EKS cluster operations (i.e. add a service)"
   type        = string
-  default     = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/role_for_appbuild"
+  default     = locals.arn_eks_user_role
 }
 
 resource "random_string" "suffix" {
