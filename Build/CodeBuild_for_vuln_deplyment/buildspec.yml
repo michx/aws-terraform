@@ -11,5 +11,5 @@ phases:
        - aws configure set aws_secret_access_key  $(cat creds.json | jq -r .Credentials.SecretAccessKey)
        - aws configure set aws_session_token $(cat creds.json | jq -r .Credentials.SessionToken)
        - aws sts get-caller-identity
-       - aws eks update-kubeconfig --region $region --name $eksclustername --role-arn $rolearn
+       - aws eks update-kubeconfig --region $region --name $eksclustername 
        - cd kubernetes-manifests && kubectl apply -f .
