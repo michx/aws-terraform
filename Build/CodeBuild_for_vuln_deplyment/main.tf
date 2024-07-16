@@ -88,6 +88,11 @@ resource "aws_iam_role_policy" "codebuild_role_policy" {
   policy = data.aws_iam_policy_document.policy_cb.json
 }
 
+resource "aws_iam_role_policy" "eks_user_role_policy" {
+  role   = "eks_user_role"
+  policy = data.aws_iam_policy_document.policy_cb.json
+}
+
 
 resource "aws_codebuild_project" "cb_project" {
   name          = "Ecommerce-app-manage"
