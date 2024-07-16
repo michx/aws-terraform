@@ -41,19 +41,19 @@ resource "aws_iam_role" "eks_user_role" {
       "Action": "sts:AssumeRole"
     },
     {
-            "Effect": "Allow",
-            "Principal": {
-                "Service": "codebuild.amazonaws.com"
-            },
-            "Action": "sts:AssumeRole"
+      "Effect": "Allow",
+      "Principal": {
+          "Service": "codebuild.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
     },
     {
-            "Sid": "Statement1",
-            "Effect": "Allow",
-            "Principal": {
-                "AWS": "arn:aws:iam::"${data.aws_caller_identity.current.account_id}":role/role_for_appbuild"
-            },
-            "Action": "sts:AssumeRole"
+      "Sid": "Statement1",
+      "Effect": "Allow",
+      "Principal": {
+          "AWS": "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/role_for_appbuild"
+      },
+      "Action": "sts:AssumeRole"
     }
   ]
 }
