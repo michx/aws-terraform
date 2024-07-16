@@ -24,7 +24,7 @@ locals {
 variable "eks_role_arn" {
   description = "ARN Reference to role used to manage EKS cluster operations (i.e. add a service)"
   type        = string
-  default     = locals.arn_eks_user_role
+  default     = local.arn_eks_user_role
 }
 
 resource "random_string" "suffix" {
